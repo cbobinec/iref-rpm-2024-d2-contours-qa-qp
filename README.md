@@ -33,3 +33,7 @@ Ces fichiers contiennent les éléments suivants :
 - par construction, tous les quartiers comptent au moins 500 habitants (même les quartiers constitués d'un seul carreau).
 
 **Source** : les données utilisées pour constituer les quartiers (seuil de niveau de vie médian, population) sont issues du Fichier localisé social et fiscal (Filosofi) 2021. Le carroyage a été réalisé de façon *ad hoc* selon une grille de carreaux de 200m de côté, en utilisant la projection usuelle pour chaque territoire (codes EPSG : 2154 pour la France métropolitaine, 5490 pour la Martinique et 2975 pour La Réunion).
+
+***Mise à jour le 08/04/2025***
+
+Modification du rattachement de 18 quartiers (16 aisés, 2 pauvres) à leur unité urbaine. La liste et le contour des quartiers ne sont pas modifiés et aucune statistique présentée dans la publication associée n'est affectée.
