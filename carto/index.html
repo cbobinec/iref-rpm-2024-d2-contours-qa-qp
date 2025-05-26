@@ -43,10 +43,7 @@
             map.addControl(nav, 'top-right');
 
             // Ajout d'une échelle
-            const scale = new maplibregl.ScaleControl({
-                maxWidth: 80,
-                unit: 'imperial'
-            });
+            const scale = new maplibregl.ScaleControl({});
             map.addControl(scale);
 
             // Ajouter des surcouches (dé-commenter les lignes en dessous pour ajouter ces surcouches)
@@ -61,6 +58,67 @@
             // this is so we share one instance across the JS code and the map renderer
             protocol.add(new pmtiles.PMTiles('quartiers_aises.pmtiles'));
             protocol.add(new pmtiles.PMTiles('quartiers_pauvres.pmtiles'));
+
+            map.on('load', () => {
+                // Quartiers aisés
+                map.addSource("quartiers_aises_source", {
+                    type: 'vector',
+                    url: 'pmtiles://quartiers_aises.pmtiles'
+                }
+                )
+
+                map.addLayer({
+                    'id': "quartiers_aises_line",
+                    'type': 'line',
+                    'source': 'quartiers_aises_source',
+                    'source-layer': 'quartiers_aises',
+                    'paint': {
+                        'line-color': "blue",
+                        'line-width': 3
+                    }
+                })
+
+                map.addLayer({
+                    'id': "quartiers_aises_fill",
+                    'type': 'fill',
+                    'source': 'quartiers_aises_source',
+                    'source-layer': 'quartiers_aises',
+                    'paint': {
+                        'fill-color': 'blue',
+                        'fill-opacity': 0.6
+                    }
+                })
+
+                // Quartiers pauvres
+                map.addSource("quartiers_pauvres_source", {
+                    type: 'vector',
+                    url: 'pmtiles://quartiers_pauvres.pmtiles'
+                }
+                )
+
+                map.addLayer({
+                    'id': "quartiers_pauvres_layer",
+                    'type': 'line',
+                    'source': 'quartiers_pauvres_source',
+                    'source-layer': 'quartiers_pauvres',
+                    'paint': {
+                        'line-color': "red",
+                        'line-width': 3
+                    }
+                })
+
+                map.addLayer({
+                    'id': "quartiers_pauvres_fill",
+                    'type': 'fill',
+                    'source': 'quartiers_pauvres_source',
+                    'source-layer': 'quartiers_pauvres',
+                    'paint': {
+                        'fill-color': 'red',
+                        'fill-opacity': 0.6
+                    }
+                })
+            })
+            
         </script>
     </body>
 </html>
