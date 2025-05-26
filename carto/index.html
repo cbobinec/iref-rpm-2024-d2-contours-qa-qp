@@ -12,6 +12,9 @@
         <!-- Importation des bibliothèques Carte Facile -->
         <link href="https://unpkg.com/carte-facile@^0.5.18/dist/carte-facile.css" rel="stylesheet" />
         <script src="https://unpkg.com/carte-facile@^0.5.18/dist/carte-facile.js"></script> 
+
+        <!-- Ajout nécessaire pour pmtiles -->
+        <script src="https://unpkg.com/pmtiles@3.2.0/dist/pmtiles.js"></script>
         
         <!-- Style pour afficher la carte en plein écran -->
         <style>
@@ -47,8 +50,17 @@
             map.addControl(scale);
 
             // Ajouter des surcouches (dé-commenter les lignes en dessous pour ajouter ces surcouches)
-            //CarteFacile.addOverlay(map, 'administrativeBoundaries');
+            CarteFacile.addOverlay(map, 'administrativeBoundaries');
             //CarteFacile.addOverlay(map, 'cadastre');
+
+            // Configuration pmtiles/maplibre
+            // add the PMTiles plugin to the maplibregl global.
+            const protocol = new pmtiles.Protocol();
+            maplibregl.addProtocol('pmtiles', protocol.tile);
+
+            // this is so we share one instance across the JS code and the map renderer
+            protocol.add(new pmtiles.PMTiles('quartiers_aises.pmtiles'));
+            protocol.add(new pmtiles.PMTiles('quartiers_pauvres.pmtiles'));
         </script>
     </body>
 </html>
