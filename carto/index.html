@@ -20,11 +20,31 @@
         <style>
             html,body, #map { height:100%; width: 100%; margin:0 }
             #map { background: #65a0ba; background: radial-gradient(circle, rgba(101, 160, 186, 1) 30%, rgba(11, 47, 71, 1) 80%) }
+            #legend {
+                position: absolute;
+                left : 1%;
+                bottom: 2%;
+                padding: 10px;
+                box-shadow: 0 1px 2px rgba(0,0,0,0.10);
+                line-height: 19px;
+                margin-bottom: 50px;
+                background-color: #FFFFFF;
+                opacity: 0.8;
+                font-size: 15;
+                color : #000000;
+            }
         </style>
     </head>
     <body>
         <!-- Le conteneur de la carte -->
         <div id="map"></div>
+
+        <!-- Légende -->
+         <div id="legend">
+            🔵Quartiers aisés<br>
+            🔴Quartiers pauvres<br>
+            <a href="https://github.com/InseeFrLab/iref-rpm-2024-d2-contours-qa-qp/tree/main" target="_blank">Source : Insee</a>
+         </div>
 
         <!-- Le script qui initialise la carte -->
         <script>
