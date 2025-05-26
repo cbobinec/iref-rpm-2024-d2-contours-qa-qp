@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Ma carte</title>
+        <title>Quartiers aisés et quartiers pauvres</title>
         
         <!-- Importation des bibliothèques MapLibre GL JS -->
         <link href="https://unpkg.com/maplibre-gl@^5.2.0/dist/maplibre-gl.css" rel="stylesheet" />
@@ -41,8 +41,8 @@
 
         <!-- Légende -->
          <div id="legend">
-            🔵Quartiers aisés<br>
-            🔴Quartiers pauvres<br>
+            <span style="display: inline-block; width: 1em; height: 1em; background-color: #11437E;"></span>Quartiers aisés<br>
+            <span style="display: inline-block; width: 1em; height: 1em; background-color:#FA5A5A ;"></span>Quartiers pauvres<br>
             <a href="https://github.com/InseeFrLab/iref-rpm-2024-d2-contours-qa-qp/tree/main" target="_blank">Source : Insee</a>
          </div>
 
@@ -56,16 +56,15 @@
                 maxZoom: 18.9, // niveau de zoom maximum, adapté aux cartes utilisant les données IGN
                 zoom: 5, // niveau de zoom inital (optionnel)
                 center: [2.5, 47], // placement initial de la carte (optionnel)
+                hash: true // pour avoir les coordonnées directement dans l'url
             });
 
             // Ajout d'un contrôle de navigation
-            const nav = new maplibregl.NavigationControl();
-            map.addControl(nav, 'top-right');
+            map.addControl(new maplibregl.NavigationControl(), 'top-right');
 
             // Ajout d'une échelle
-            const scale = new maplibregl.ScaleControl({});
-            map.addControl(scale);
-
+            map.addControl(new maplibregl.ScaleControl({}));
+            
             // Ajouter des surcouches (dé-commenter les lignes en dessous pour ajouter ces surcouches)
             CarteFacile.addOverlay(map, 'administrativeBoundaries');
             //CarteFacile.addOverlay(map, 'cadastre');
@@ -80,6 +79,7 @@
             protocol.add(new pmtiles.PMTiles('quartiers_pauvres.pmtiles'));
 
             map.on('load', () => {
+
                 // Quartiers aisés
                 map.addSource("quartiers_aises_source", {
                     type: 'vector',
@@ -93,7 +93,7 @@
                     'source': 'quartiers_aises_source',
                     'source-layer': 'quartiers_aises',
                     'paint': {
-                        'line-color': "blue",
+                        'line-color': "black",
                         'line-width': 3
                     }
                 })
@@ -104,7 +104,7 @@
                     'source': 'quartiers_aises_source',
                     'source-layer': 'quartiers_aises',
                     'paint': {
-                        'fill-color': 'blue',
+                        'fill-color': '#11437E',
                         'fill-opacity': 0.6
                     }
                 })
@@ -122,7 +122,7 @@
                     'source': 'quartiers_pauvres_source',
                     'source-layer': 'quartiers_pauvres',
                     'paint': {
-                        'line-color': "red",
+                        'line-color': "black",
                         'line-width': 3
                     }
                 })
@@ -133,11 +133,51 @@
                     'source': 'quartiers_pauvres_source',
                     'source-layer': 'quartiers_pauvres',
                     'paint': {
-                        'fill-color': 'red',
+                        'fill-color': '#FA5A5A',
                         'fill-opacity': 0.6
                     }
                 })
             })
+
+            // When a click event occurs on a feature in the places layer, open a popup at the
+            // location of the feature, with description HTML from its properties.
+            const popupOnClick = (e) => {
+                const properties = e.features[0].properties;
+                new maplibregl.Popup()
+                .setLngLat(e.lngLat)
+                .setHTML(`
+                    <strong>Identifiant quartier</strong>: ${properties.id_quartier}<br>
+                    <strong>Unité urbaine</strong>: ${properties.libuu2020} (${properties.uu2020})<br>
+                    <strong>Seuil de niveau de vie médian utilisé pour définir le quartier</strong>:
+                    ${properties.seuil_niveau_vie_median} <br>
+                    <br>
+                `
+                )
+                .addTo(map);
+            }
+
+            map.on('click', 'quartiers_pauvres_fill', popupOnClick);
+            map.on('click', 'quartiers_aises_fill', popupOnClick);
+
+            // Change the cursor to a pointer when the mouse is over the places layer.
+            map.on('mouseenter', 'quartiers_pauvres_fill', () => {
+                map.getCanvas().style.cursor = 'pointer';
+            });
+
+            // Change it back to a pointer when it leaves.
+            map.on('mouseleave', 'quartiers_pauvres_fill', () => {
+                map.getCanvas().style.cursor = '';
+            });
+
+            // Change the cursor to a pointer when the mouse is over the places layer.
+            map.on('mouseenter', 'quartiers_aises_fill', () => {
+                map.getCanvas().style.cursor = 'pointer';
+            });
+
+            // Change it back to a pointer when it leaves.
+            map.on('mouseleave', 'quartiers_aises_fill', () => {
+                map.getCanvas().style.cursor = '';
+            });
             
         </script>
     </body>
