@@ -43,7 +43,6 @@
          <div id="legend">
             <span style="display: inline-block; width: 1em; height: 1em; background-color: #11437E;"></span>Quartiers aisés<br>
             <span style="display: inline-block; width: 1em; height: 1em; background-color:#FA5A5A ;"></span>Quartiers pauvres<br>
-            <a href="https://github.com/InseeFrLab/iref-rpm-2024-d2-contours-qa-qp/tree/main" target="_blank">Source : Insee</a>
          </div>
 
         <!-- Le script qui initialise la carte -->
@@ -83,7 +82,8 @@
                 // Quartiers aisés
                 map.addSource("quartiers_aises_source", {
                     type: 'vector',
-                    url: 'pmtiles://quartiers_aises.pmtiles'
+                    url: 'pmtiles://quartiers_aises.pmtiles',
+                    attribution: '<a href="https://github.com/InseeFrLab/iref-rpm-2024-d2-contours-qa-qp/tree/main" target="_blank">Insee, Filosofi 2021</a>'
                 }
                 )
 
