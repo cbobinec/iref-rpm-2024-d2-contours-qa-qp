@@ -7,5 +7,5 @@ ogr2ogr quartiers_pauvres.geojson quartiers_pauvres.gpkg
 ogr2ogr quartiers_aises.geojson quartiers_aises.gpkg
 
 # creation tiles (pmtiles)
-tippecanoe quartiers_aises.geojson -o carto/quartiers_aises.pmtiles
-tippecanoe quartiers_pauvres.geojson -o carto/quartiers_pauvres.pmtiles
+tippecanoe quartiers_aises.geojson -o html/quartiers_aises.pmtiles
+tippecanoe quartiers_pauvres.geojson -o html/quartiers_pauvres.pmtiles
