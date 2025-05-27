@@ -82,10 +82,6 @@
             protocol.add(new pmtiles.PMTiles('qpv2024.pmtiles'));
 
             map.on('load', () => {
-                map.setProjection({
-                    type: 'mercator',
-                });
-
                 // Quartiers aisés
                 map.addSource("quartiers_aises_source", {
                     type: 'vector',
