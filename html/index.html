@@ -43,8 +43,8 @@
 
         <!-- Légende -->
          <div id="legend">
-            <span style="display: inline-block; width: 1em; height: 1em; border: 2px solid black; background-color: #11437E;"></span>Quartiers aisés<br>
-            <span style="display: inline-block; width: 1em; height: 1em; border: 2px solid black; background-color:#FA5A5A ;"></span>Quartiers pauvres<br>
+            <span style="display: inline-block; width: 1em; height: 1em; border: 2px solid black; background-color:#FA5A5A;"></span>Quartiers aisés<br>
+            <span style="display: inline-block; width: 1em; height: 1em; border: 2px solid black; background-color: #11437E;"></span>Quartiers pauvres<br>
             <span style="display: inline-block; width: 1em; height: 1em; border: 2px solid #004A4E;"></span>Quartiers prioritaires de la ville 2024<br>
          </div>
 
@@ -81,7 +81,26 @@
             protocol.add(new pmtiles.PMTiles('quartiers_pauvres.pmtiles'));
             protocol.add(new pmtiles.PMTiles('qpv2024.pmtiles'));
 
-            map.on('load', () => {
+            map.on('load', () => {                
+                // QPV
+                // en premier pour être "en dessous" dans l'ordre d'affichage
+                map.addSource("qpv_source", {
+                    type: 'vector',
+                    url: 'pmtiles://qpv2024.pmtiles'
+                }
+                )
+
+                map.addLayer({
+                    'id': "qpv_layer",
+                    'type': 'line',
+                    'source': 'qpv_source',
+                    'source-layer': 'qpv2024',
+                    'paint': {
+                        'line-color': "black",
+                        'line-width': 5
+                    }
+                })
+
                 // Quartiers aisés
                 map.addSource("quartiers_aises_source", {
                     type: 'vector',
@@ -107,7 +126,7 @@
                     'source': 'quartiers_aises_source',
                     'source-layer': 'quartiers_aises',
                     'paint': {
-                        'fill-color': '#11437E',
+                        'fill-color': '#FA5A5A',
                         'fill-opacity': 0.6
                     }
                 })
@@ -136,27 +155,8 @@
                     'source': 'quartiers_pauvres_source',
                     'source-layer': 'quartiers_pauvres',
                     'paint': {
-                        'fill-color': '#FA5A5A',
+                        'fill-color': '#11437E',
                         'fill-opacity': 0.6
-                    }
-                })
-
-                
-                // QPV
-                map.addSource("qpv_source", {
-                    type: 'vector',
-                    url: 'pmtiles://qpv2024.pmtiles'
-                }
-                )
-
-                map.addLayer({
-                    'id': "qpv_layer",
-                    'type': 'line',
-                    'source': 'qpv_source',
-                    'source-layer': 'qpv2024',
-                    'paint': {
-                        'line-color': "#004A4E",
-                        'line-width': 5
                     }
                 })
             })
